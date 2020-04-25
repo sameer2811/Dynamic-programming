@@ -1,0 +1,35 @@
+#define mod 1000000007
+long staircase(int n,long*output) // MEMOIZATION 
+{
+    if(n==0)
+    return 1;
+    if(n==1)
+    return 1;
+    if(n==2)
+    return 2;
+    
+    if(output[n]!=0){
+   
+    return output[n];
+    }
+    long ans1=staircase(n-1,output);
+    long ans2=staircase(n-2,output);
+    long ans3=staircase(n-3,output);
+    
+    return output[n]=(ans1+ans2+ans3);
+    
+}
+long staircase(int n){
+    
+    long * output=new long[n+1];// DYNAMIC PROGRAMMING
+    for(int i=0;i<=n;i++)
+    output[i]=0;
+    output[0]=1;
+    output[1]=1;
+    output[2]=2;
+    for(int i=3;i<=n;i++)
+    output[i]=output[i-1]+output[i-2]+output[i-3];
+    return output[n];
+}
+
+
