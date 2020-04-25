@@ -1,0 +1,42 @@
+int waysTochange(int **output,int denominations[],int numDenominations,int value,int start)
+{
+    if(value==0)
+    return 1;
+    
+    if(start==numDenominations)
+    return 0;
+    
+    if(value<0)
+    return 0;
+    
+    if(output[value][start]!=-1)
+    return output[value][start];
+    
+    int ans1=waysTochange(output,denominations,numDenominations,value-denominations[start],start);
+    int ans2=waysTochange(output,denominations,numDenominations,value,start+1);
+    
+    return output[value][start]=ans1+ans2;
+    
+    
+}
+int countWaysToMakeChange(int denominations[], int numDenominations, int value){
+
+    int **output=new int*[value+1];
+    for(int i=0;i<(value+1);i++)
+    {
+        output[i]=new int[numDenominations+1];
+    }
+    for(int i=0;i<(value+1);i++)
+    {
+        for(int j=0;j<numDenominations+1;j++)
+        {
+            output[i][j]=-1;
+        }
+    }
+    
+    return waysTochange(output,denominations,numDenominations,value,0);
+    
+    
+    
+    
+}
