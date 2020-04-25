@@ -1,0 +1,72 @@
+using namespace std;
+#define mod 1000000007
+                            APPROACH 1 ------->  BRUTE FORCE APPROACH 
+
+int alpha_code(string str)
+{
+    if(str.size()==0)
+     return 1;
+    
+    if(str[0]=='0')
+    return 0;
+    
+    if(str.size()==1)
+    return 1;
+    
+    
+    int ans1 = alpha_code(str.substr(1));
+    int a=str[0]-'0';
+    int b=str[1]-'0';
+    int ans2=0;
+    if((a*10+b)<=26)
+    {
+     ans2 = alpha_code(str.substr(2)); 
+    }
+    return (ans1+ans2)%mod;
+    
+}                 
+                           APPROACH 2---------->MEMOIZATION 
+
+int alpha_code(string str,int *ptr,int start)
+{
+    if(str.size()==0)
+     return 1;
+    
+    if(str[0]=='0')
+    return 0;
+    
+    if(str.size()==1)
+    return 1;
+    
+    if(ptr[start]!=0)
+    return ptr[start];
+    
+    
+    int ans1 = alpha_code(str.substr(1),ptr,start+1);
+    int a=str[0]-'0';
+    int b=str[1]-'0';
+    int ans2=0;
+    if((a*10+b)<=26)
+    {
+     ans2 = alpha_code(str.substr(2),ptr,start+2); 
+    }
+    return ptr[start]=(ans1+ans2)%mod;
+    
+}
+int main()
+{
+    string str;
+    cin>>str;
+    while(str!="0")
+    {
+        int *ptr=new int[str.size()];
+        memset(ptr,0,str.size()*sizeof(int));
+        int start=0;
+        cout<<alpha_code(str,ptr,start)<<endl;
+        delete[]ptr;
+        cin>>str;
+    }
+    
+    
+    return 0;
+}
