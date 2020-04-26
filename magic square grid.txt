@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+using namespace std;
+int min_health(int**ptr,int**output,int rows,int col,int start,int end)
+{
+    if(start>rows || end>col)
+    return INT_MAX;
+    
+    if(rows==start and col==end)
+    return 1;
+    if(output[start][end]!=-1)
+    return output[start][end];
+    int min_health_1=INT_MAX;
+    int min_health_2=INT_MAX;
+    if(start+1<=rows and end<=col)
+    {
+     min_health_1=min_health(ptr,output,rows,col,start+1,end)-ptr[start+1][end];
+     if(min_health_1<=0)
+     {
+     min_health_1=1;
+     }
+    }
+    if(end+1<=col and start<=rows)
+    {
+     min_health_2=min_health(ptr,output,rows,col,start,end+1)-ptr[start][end+1];
+     if(min_health_2<=0)
+     {
+     min_health_2=1;
+     }
+    }
+    return output[start][end]=min(min_health_1,min_health_2);
+    
+    //int ans1= min(min_health_1,min_health_2)-input[start][end];
+    
+}
+int minimum_health(int**ptr,int row,int col)
+{
+        
+        int**output=new int*[row];
+        for(int i=0;i<row;i++)
+        {
+            output[i]=new int[col];
+        }
+        output[row-1][col-1]=1;
+        for(int j=col-2;j>=0;j--)
+        {
+        output[row-1][j]=output[row-1][j+1]-ptr[row-1][j];
+        if(output[row-1][j]<=0)
+        output[row-1][j]=1;
+        }
+        for(int j=row-2;j>=0;j--)
+        {
+        output[j][col-1]=output[j+1][col-1]-ptr[j][col-1];
+        if(output[j][col-1]<=0)
+        output[j][col-1]=1;
+        }
+        for(int i=row-2;i>=0;i--)
+        {
+            for(int j=col-2;j>=0;j--)
+            {
+                int value1=output[i][j+1]-ptr[i][j];
+                if(value1<=0)
+                value1=1;
+                int value2=output[i+1][j]-ptr[i][j];
+                if(value2<=0)
+                value2=1;
+                output[i][j]=min(value1,value2);
+            }
+        }
+        return output[0][0];
+    
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int rows,col;
+        cin>>rows>>col;
+        int **ptr=new int*[rows];
+        int**output=new int*[rows+1];
+        for(int i=0;i<rows;i++)
+        {
+            ptr[i]=new int[col];
+            output[i]=new int[col+1];
+        }
+        
+        for(int i=0;i<rows;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                cin>>ptr[i][j];
+                output[i][j]=-1;
+            }
+        }
+        int ans=minimum_health(ptr,rows,col);
+        
+        cout<<ans<<endl;
+        
+         
+    }
+    return 0;
+}
+
