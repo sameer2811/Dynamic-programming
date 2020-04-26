@@ -1,0 +1,82 @@
+#include <bits/stdc++.h>
+using namespace std;
+int maximum_top_bottom(vector<int>vect)
+{
+    int max_sum_so_far=0;
+    int current_sum=0;
+    for(int i=0;i<vect.size();i++)
+    {
+        current_sum=current_sum+vect[i];
+        if(current_sum<0)
+        current_sum=0;
+        if(current_sum>max_sum_so_far)
+        {
+            max_sum_so_far=current_sum;
+        }
+    }
+    return max_sum_so_far;
+}
+int maximum_rectangle(int**ptr,int m,int n)
+{
+    int result=-1;
+    for(int left=0;left<n;left++)// representing column 1
+    {
+        vector<int>vect1;
+        for(int i=0;i<m;i++)
+        {
+            vect1.push_back(ptr[i][left]);
+        }
+        for(int right=left;right<n;right++)// representing column 2 
+        {
+           if(left!=right)
+           {
+               for(int i=0;i<m;i++)
+               {
+                   vect1[i]=vect1[i]+ptr[i][right];
+               }
+           }
+           //int index1,index2;
+           int ans=maximum_top_bottom(vect1);
+            
+           result=max(result,ans);  
+        }
+       
+    }
+    return result;
+}
+int main()
+{
+    int m,n;
+    cin>>m>>n;
+    int **ptr=new int*[m];
+    for(int i=0;i<m;i++)
+    {
+        ptr[i]=new int[n];
+    }
+    for(int i=0;i<m;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            cin>>ptr[i][j];
+        }
+    }
+    int result=maximum_rectangle(ptr,m,n);
+    if(result!=0)
+    {
+       cout<<result<<endl;
+    }
+    else
+    {
+        int minimum=INT_MIN;
+        for(int i=0;i<m;i++)
+        {
+          for(int j=0;j<n;j++)
+          {
+              if(ptr[i][j]>minimum)
+               minimum=ptr[i][j];
+          }
+        }
+        cout<<minimum<<endl;
+        
+    }
+}
